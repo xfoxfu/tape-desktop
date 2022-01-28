@@ -4,22 +4,27 @@ import {
   Center,
   Container,
   Heading,
+  HStack,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  PinInput,
+  PinInputField,
   Stack,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
-export const Login: React.FunctionComponent = () => {
+export const LoginPage: React.FunctionComponent = () => {
+  const navigate = useNavigate();
+  const onSubmit = () => {
+    navigate("/questions");
+  };
+
   return (
-    <Center
-      flexDirection="column"
-      height="100vh"
-      bgGradient="linear(to-br, #7df29c, #0f69a9)"
-    >
+    <Center flexDirection="column" minH="100vh">
       <Container>
-        <Stack spacing={4} background="white" padding={4} rounded={8}>
+        <Stack spacing={4} background="white" padding={4} rounded="2xl">
           <Heading>Tape 小纸条</Heading>
           <InputGroup>
             <InputLeftElement
@@ -32,19 +37,25 @@ export const Login: React.FunctionComponent = () => {
             </InputRightElement>
           </InputGroup>
 
-          <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<LockIcon color="gray.300" />}
-            />
-            <Input placeholder="密码" type="password" />
-          </InputGroup>
+          <HStack>
+            <LockIcon color="gray.300" />
+            <PinInput>
+              <PinInputField />
+              <PinInputField />
+              <PinInputField />
+              <PinInputField />
+              <PinInputField />
+              <PinInputField />
+            </PinInput>
+          </HStack>
 
-          <Button colorScheme="teal">登入</Button>
+          <Button colorScheme="teal" onClick={onSubmit}>
+            登入
+          </Button>
         </Stack>
       </Container>
     </Center>
   );
 };
 
-export default Login;
+export default LoginPage;
