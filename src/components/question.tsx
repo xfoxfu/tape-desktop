@@ -1,9 +1,9 @@
-import { Box, Heading, Text, ThemingProps } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 export interface QuestionProps {
   text: string;
   time: string;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
   size?: string;
 }
 

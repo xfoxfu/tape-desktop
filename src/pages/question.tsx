@@ -1,31 +1,16 @@
-import { LockIcon, PhoneIcon } from "@chakra-ui/icons";
 import {
   Button,
-  Center,
-  Container,
-  Heading,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  Stack,
-  Grid,
-  GridItem,
   HStack,
-  Box,
-  Flex,
-  Square,
-  Text,
   VStack,
   Textarea,
   Select,
   ButtonGroup,
-  Spacer,
   FormControl,
   FormLabel,
   Switch,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { Marker } from "../components/marker";
 import { Question } from "../components/question";
 
 export const QuestionPage: React.FunctionComponent = ({ children }) => {
@@ -43,15 +28,7 @@ export const QuestionPage: React.FunctionComponent = ({ children }) => {
         size="xl"
       />
       <VStack rounded="2xl" bg="white" w="full" align="start" padding={4}>
-        <HStack spacing={4}>
-          <Heading size="sm">标记</Heading>
-          <ButtonGroup isAttached size="sm">
-            <Button>未读</Button>
-            <Button colorScheme="blue">想读</Button>
-            <Button>读过</Button>
-            <Button>抛弃</Button>
-          </ButtonGroup>
-        </HStack>
+        <Marker hint="标记" />
         <Textarea placeholder="回答"></Textarea>
         <HStack w="full">
           <Select placeholder="快速回应" w="full">
@@ -63,7 +40,7 @@ export const QuestionPage: React.FunctionComponent = ({ children }) => {
         </HStack>
       </VStack>
       <HStack spacing={8} bg="white" padding={4} borderRadius="2xl" w="full">
-        <ButtonGroup isAttached>
+        <ButtonGroup isAttached variant="ghost">
           <Button>上一条</Button>
           <Button>下一条</Button>
         </ButtonGroup>
