@@ -4,21 +4,20 @@
 )]
 
 use crate::menu::AddDefaultSubmenus;
-use tauri::api::shell;
-use tauri::{CustomMenuItem, Menu, Submenu, WindowBuilder, WindowUrl};
+use tauri::Menu;
 
+mod live;
 mod menu;
-
-fn custom_item(name: &str) -> CustomMenuItem {
-  let c = CustomMenuItem::new(name.to_string(), name);
-  return c;
-}
 
 fn main() {
   let ctx = tauri::generate_context!();
 
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![])
+    .invoke_handler(tauri::generate_handler![
+      live::open_live_window,
+      live::close_live_window,
+      live::has_live_window
+    ])
     .menu(
       Menu::new()
         .add_default_app_submenu_if_macos(&ctx.package_info().name)

@@ -5,6 +5,7 @@ specifiers:
   '@chakra-ui/react': ^1.8.1
   '@emotion/react': ^11
   '@emotion/styled': ^11
+  '@tauri-apps/api': ^1.0.0-beta.8
   '@tauri-apps/cli': ^1.0.0-beta.10
   '@types/react': ^17.0.33
   '@types/react-dom': ^17.0.10
@@ -21,6 +22,7 @@ dependencies:
   '@chakra-ui/react': 1.8.1_22baa6f5acaf9d65b412ab335954e6a6
   '@emotion/react': 11.7.1_b08e3c15324cbe90a6ff8fcd416c932c
   '@emotion/styled': 11.6.0_0044a6ec6dcf5de7705bffaaff7afd26
+  '@tauri-apps/api': 1.0.0-beta.8
   framer-motion: 5.6.0_react-dom@17.0.2+react@17.0.2
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
@@ -1351,6 +1353,11 @@ packages:
     dependencies:
       defer-to-connect: 2.0.1
     dev: true
+
+  /@tauri-apps/api/1.0.0-beta.8:
+    resolution: {integrity: sha512-a56lXB7XvQ4+fKtT0pxpkjTSKhyrQ1Vmjyvt2ox3mT9xw3l7s8IOKHJ1WuqW6TA6xdoy3Cyja3Z3prw8hflS7g==}
+    engines: {node: '>= 12.13.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
+    dev: false
 
   /@tauri-apps/cli/1.0.0-beta.10:
     resolution: {integrity: sha512-T0cvV5Y5vCeEw6tQ7DfuGhXxxe26AwW9i3oYT/AQZlwrLG9Xk02Pp0/lKqd/WeddE3X/IFfSm8YMRCz3VElIWQ==}
