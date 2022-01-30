@@ -4,8 +4,8 @@ use tauri::{Manager, WindowBuilder, WindowUrl};
 pub fn open_live_window(app_handle: tauri::AppHandle) {
   if app_handle.get_window("live").is_none() {
     tauri::async_runtime::spawn(async move {
+      let app_handle = app_handle.clone();
       app_handle
-        .clone()
         .create_window(
           "live",
           WindowUrl::App("/live".into()),

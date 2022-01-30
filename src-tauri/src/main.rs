@@ -4,7 +4,7 @@
 )]
 
 use crate::menu::AddDefaultSubmenus;
-use tauri::Menu;
+use tauri::{Manager, Menu};
 
 mod live;
 mod menu;
@@ -26,6 +26,29 @@ fn main() {
         .add_default_view_submenu()
         .add_default_window_submenu(),
     )
-    .run(ctx)
-    .expect("error while running tauri application");
+    .setup(|app| {
+      let handle = app.handle().clone();
+      handle
+        .get_window("main")
+        .unwrap()
+        .on_window_event(move |f| {
+          if let tauri::WindowEvent::Destroyed = f {
+            if let Some(w) = handle.get_window("live") {
+              w.close().unwrap();
+            }
+          }
+        });
+      Ok(())
+    })
+    .build(ctx)
+    .expect("error while running tauri application")
+    .run(|_, _| {
+      // FIXME: when tauri supports "activate" event, make quit on macOS
+      // more natively by open default windows on Dock icon click and do
+      // not quit application when all windows closed.
+      // see: https://github.com/tauri-apps/tao/issues/218
+      // if let tauri::Event::ExitRequested { api, .. } = e {
+      //   api.prevent_exit();
+      // }
+    });
 }

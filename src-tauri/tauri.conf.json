@@ -23,10 +23,10 @@
       ],
       "resources": [],
       "externalBin": [],
-      "copyright": "",
-      "category": "DeveloperTool",
-      "shortDescription": "",
-      "longDescription": "",
+      "copyright": "tape-desktop A desktop app for Tape.\nCopyright (C) 2022 Yuze Fu",
+      "category": "SocialNetworking",
+      "shortDescription": "A desktop app for Tape.",
+      "longDescription": "A desktop app for Tape.",
       "deb": {
         "depends": [],
         "useBootstrapper": false
@@ -48,9 +48,7 @@
     "updater": {
       "active": false
     },
-    "allowlist": {
-      "all": true
-    },
+    "allowlist": {},
     "windows": [
       {
         "title": "Tape",
