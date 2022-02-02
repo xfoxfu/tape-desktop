@@ -13,7 +13,6 @@ pub fn open_live_window(app_handle: tauri::AppHandle) {
             let builder = window_builder
               .title("Tape Live Helper")
               .inner_size(600., 400.)
-              .decorations(false)
               .visible(true);
             (builder, webview_attributes)
           },

@@ -8,6 +8,7 @@ use tauri::{Manager, Menu};
 
 mod live;
 mod menu;
+mod sign;
 
 fn main() {
   let ctx = tauri::generate_context!();
@@ -16,7 +17,9 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       live::open_live_window,
       live::close_live_window,
-      live::has_live_window
+      live::has_live_window,
+      sign::md5,
+      sign::sign,
     ])
     .menu(
       Menu::new()
