@@ -1,57 +1,56 @@
-import { LockIcon, PhoneIcon } from "@chakra-ui/icons";
+import { LockIcon } from "@chakra-ui/icons";
 import {
-  Button,
   Center,
+  Collapse,
   Container,
   Heading,
   HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
   PinInput,
   PinInputField,
   Stack,
 } from "@chakra-ui/react";
+import { invoke } from "@tauri-apps/api";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PhoneCodeInput from "../components/phone_code_input";
 
 export const LoginPage: React.FunctionComponent = () => {
+  const [isCodeSent, setIsCodeSent] = useState(false);
+  const [code, setCode] = useState("");
   const navigate = useNavigate();
   const onSubmit = () => {
     navigate("/questions");
   };
+  const onSendCodeClick = () => {
+    setIsCodeSent(true);
+  };
 
   return (
     <Center flexDirection="column" minH="100vh">
-      <Container>
-        <Stack spacing={4} background="white" padding={4} rounded="2xl">
+      <Container w="24rem">
+        <Stack spacing={4} background="white" p={4} rounded="2xl">
           <Heading>Tape 小纸条</Heading>
-          <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<PhoneIcon color="gray.300" />}
-            />
-            <Input type="tel" placeholder="用户名" />
-            <InputRightElement width="7rem">
-              <Button>发送验证码</Button>
-            </InputRightElement>
-          </InputGroup>
 
-          <HStack>
-            <LockIcon color="gray.300" />
-            <PinInput>
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-            </PinInput>
-          </HStack>
+          <PhoneCodeInput onCodeSent={onSendCodeClick} />
 
-          <Button colorScheme="teal" onClick={onSubmit}>
-            登入
-          </Button>
+          <Collapse in={isCodeSent} animateOpacity>
+            <HStack ps={3}>
+              <LockIcon color="gray.300" />
+              <PinInput
+                onComplete={onSubmit}
+                value={code}
+                onChange={setCode}
+                isDisabled={!isCodeSent}
+              >
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+              </PinInput>
+            </HStack>
+          </Collapse>
         </Stack>
       </Container>
     </Center>

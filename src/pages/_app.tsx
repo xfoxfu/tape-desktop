@@ -7,7 +7,7 @@ import LivePage from "./live";
 
 export const App: React.FunctionComponent = () => {
   return (
-    <Box bgGradient="linear(to-br, #7df29c, #0f69a9)">
+    <Box bgGradient="linear(to-br, #9BF8F4, #6F7BF7)">
       <BrowserRouter>
         <Routes>
           <Route index element={<LoginPage />} />

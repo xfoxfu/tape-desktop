@@ -14,13 +14,7 @@ export const Question: React.FunctionComponent<QuestionProps> = ({
   size,
 }) => {
   return (
-    <Box
-      rounded="2xl"
-      padding={4}
-      bg="white"
-      onClick={onClick}
-      cursor="pointer"
-    >
+    <Box rounded="2xl" p={4} bg="white" onClick={onClick} cursor="pointer">
       <Text fontSize={size}>{text}</Text>
       <Text color="gray.500">{time}</Text>
     </Box>

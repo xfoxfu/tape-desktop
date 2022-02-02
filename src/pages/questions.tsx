@@ -15,7 +15,7 @@ export const QuestionsPage: React.FunctionComponent = () => {
 
   return (
     <Flex minH="100vh">
-      <VStack flex="1" padding={4} align="start">
+      <VStack flex="1" p={4} align="start">
         <Button onClick={onOpenLiveWindow}>打开直播助手</Button>
         <Marker />
         <Question
@@ -29,7 +29,7 @@ export const QuestionsPage: React.FunctionComponent = () => {
           onClick={onChoose}
         />
       </VStack>
-      <Box flex="2" padding={4}>
+      <Box flex="2" p={4}>
         <Outlet />
       </Box>
     </Flex>

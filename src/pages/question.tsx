@@ -27,7 +27,7 @@ export const QuestionPage: React.FunctionComponent = ({ children }) => {
         onClick={onChoose}
         size="xl"
       />
-      <VStack rounded="2xl" bg="white" w="full" align="start" padding={4}>
+      <VStack rounded="2xl" bg="white" w="full" align="start" p={4}>
         <Marker hint="标记" />
         <Textarea placeholder="回答"></Textarea>
         <HStack w="full">
@@ -39,7 +39,7 @@ export const QuestionPage: React.FunctionComponent = ({ children }) => {
           <Button colorScheme="teal">回答</Button>
         </HStack>
       </VStack>
-      <HStack spacing={8} bg="white" padding={4} borderRadius="2xl" w="full">
+      <HStack spacing={8} bg="white" p={4} borderRadius="2xl" w="full">
         <ButtonGroup isAttached variant="ghost">
           <Button>上一条</Button>
           <Button>下一条</Button>
