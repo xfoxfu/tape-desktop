@@ -7,6 +7,8 @@ specifiers:
   '@chakra-ui/system': ^1.10.1
   '@emotion/react': ^11
   '@emotion/styled': ^11
+  '@sentry/react': ^6.17.3
+  '@sentry/tracing': ^6.17.3
   '@tauri-apps/api': ^1.0.0-beta.8
   '@tauri-apps/cli': ^1.0.0-beta.10
   '@types/react': ^17.0.33
@@ -27,6 +29,8 @@ dependencies:
   '@chakra-ui/system': 1.10.1_922a85da57e3646a57465b7970b0de85
   '@emotion/react': 11.7.1_91de5bc04873a2ecfed8879f8166219d
   '@emotion/styled': 11.6.0_5e8f57678a77e349831a88361eba8fdc
+  '@sentry/react': 6.17.3_react@17.0.2
+  '@sentry/tracing': 6.17.3
   '@tauri-apps/api': 1.0.0-beta.8
   framer-motion: 5.6.0_react-dom@17.0.2+react@17.0.2
   react: 17.0.2
@@ -1351,6 +1355,84 @@ packages:
       estree-walker: 2.0.2
       picomatch: 2.3.1
     dev: true
+
+  /@sentry/browser/6.17.3:
+    resolution: {integrity: sha512-UElPk6/Q/78eL8tHGHy080uHVQAuieWXlSMSzrJMVNa+vwXPwEeyL+WbPtKkND2jGwdODjg+pSj960RqhIv+ig==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/core': 6.17.3
+      '@sentry/types': 6.17.3
+      '@sentry/utils': 6.17.3
+      tslib: 1.14.1
+    dev: false
+
+  /@sentry/core/6.17.3:
+    resolution: {integrity: sha512-h7WgrNL0RVlr8Dceh97ZiXNdmEumDutpoqFijjiX4x72IiC6zSaVD4IsqrdGln+v8iJ3l3lX44HHqzubDub1OQ==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/hub': 6.17.3
+      '@sentry/minimal': 6.17.3
+      '@sentry/types': 6.17.3
+      '@sentry/utils': 6.17.3
+      tslib: 1.14.1
+    dev: false
+
+  /@sentry/hub/6.17.3:
+    resolution: {integrity: sha512-TDxv8nRvk45xvfQg6zs8GYzQzgo0EMhI3wjQZLiNfW2rzybKmIwVp2x3O4PAc3WPzwg4bYNgSAkYKVlHmYjRCg==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/types': 6.17.3
+      '@sentry/utils': 6.17.3
+      tslib: 1.14.1
+    dev: false
+
+  /@sentry/minimal/6.17.3:
+    resolution: {integrity: sha512-zvGGfHNNA92Lqx6P8ZwOUkmRmAiQl0AQFRXl9So1Ayq9bJRnFLJZv4YFVnp2wE4HXYIlfBYb51+GlGB5LIuPmw==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/hub': 6.17.3
+      '@sentry/types': 6.17.3
+      tslib: 1.14.1
+    dev: false
+
+  /@sentry/react/6.17.3_react@17.0.2:
+    resolution: {integrity: sha512-m6QtNT7U3k5UBeVfrFheTKNvglmEI90c/H2P6NYHhZMflnDngq/EDTbC+pE8VPtvdv7ZcXuxZNSHi6qkXvIkQA==}
+    engines: {node: '>=6'}
+    peerDependencies:
+      react: 15.x || 16.x || 17.x
+    dependencies:
+      '@sentry/browser': 6.17.3
+      '@sentry/minimal': 6.17.3
+      '@sentry/types': 6.17.3
+      '@sentry/utils': 6.17.3
+      hoist-non-react-statics: 3.3.2
+      react: 17.0.2
+      tslib: 1.14.1
+    dev: false
+
+  /@sentry/tracing/6.17.3:
+    resolution: {integrity: sha512-GnHugxw5qkWwYmeQbbrswuWpb0bpYqyJr/dO25QQOCwp+cckQrvBYTMC8zGJG10u94O4el0lQaQnNFz9WF3r6g==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/hub': 6.17.3
+      '@sentry/minimal': 6.17.3
+      '@sentry/types': 6.17.3
+      '@sentry/utils': 6.17.3
+      tslib: 1.14.1
+    dev: false
+
+  /@sentry/types/6.17.3:
+    resolution: {integrity: sha512-0AXCjYcfl8Vx26GfyLY4rBQ78Lyt1oND3UozTTMaVXlcKYIjzV+f7TOo5IZx+Kbr6EGUNDLdpA4xfbkWdW/1NA==}
+    engines: {node: '>=6'}
+    dev: false
+
+  /@sentry/utils/6.17.3:
+    resolution: {integrity: sha512-6/2awDIeHSj0JgiC7DDdV1lxvLmf+/BisWhw09dKvmhVQB3ADvQZbohjUgM+Qam5zE0xmZAfQhvuDwC41W8Wnw==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/types': 6.17.3
+      tslib: 1.14.1
+    dev: false
 
   /@sindresorhus/is/0.14.0:
     resolution: {integrity: sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==}
