@@ -76,7 +76,7 @@ export const QuestionsPage: React.FunctionComponent = () => {
           </Button>
         </VStack>
       </Box>
-      <Box flex="5" p={4}>
+      <Box flex="5" p={4} maxH="100vh" overflowY="scroll">
         <Outlet />
       </Box>
     </Flex>

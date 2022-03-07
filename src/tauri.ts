@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api";
+import { emit, EventCallback, listen } from "@tauri-apps/api/event";
 
 const wrapPromise = <T>(p: Promise<T>): Promise<T> => {
   return p.catch((e) => {
@@ -49,3 +50,15 @@ export const requestPost = <T = any>(
 ): Promise<T> => {
   return wrapPromise(invoke("request_post", { url, params, peerId, token }));
 };
+
+export interface LiveEventArgs {
+  text: string;
+  time: string;
+}
+export const emitLiveEvent = (text: string, time: string) =>
+  emit("live", {
+    text,
+    time,
+  });
+export const listenLiveEvent = (handler: EventCallback<string>) =>
+  listen("live", handler);

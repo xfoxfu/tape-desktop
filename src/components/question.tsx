@@ -25,7 +25,14 @@ export const Question: React.FunctionComponent<QuestionProps> = ({
       onClick={onClick}
       cursor="pointer"
     >
-      <Text fontSize={size}>{text}</Text>
+      <Text fontSize={size}>
+        {text.split("\n").map((l: any) => (
+          <>
+            {l}
+            <br />
+          </>
+        ))}
+      </Text>
       <Text color="gray.500">{time}</Text>
       {mark && <Tag>{mark}</Tag>}
     </Box>
