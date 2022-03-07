@@ -10,6 +10,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { invoke } from "@tauri-apps/api";
+import { getVersion } from "@tauri-apps/api/app";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PhoneCodeInput from "../components/phone_code_input";
@@ -23,13 +24,16 @@ export const LoginPage: React.FunctionComponent = () => {
   };
   const onSendCodeClick = () => {
     setIsCodeSent(true);
+    throw new Error("testing sentry");
   };
+  const [v, setV] = useState("");
+  getVersion().then(setV);
 
   return (
     <Center flexDirection="column" minH="100vh">
       <Container w="24rem">
         <Stack spacing={4} background="white" p={4} rounded="2xl">
-          <Heading>Tape 小纸条</Heading>
+          <Heading>Tape 小纸条 {v}</Heading>
 
           <PhoneCodeInput onCodeSent={onSendCodeClick} />
 

@@ -6,9 +6,9 @@
 use crate::menu::AddDefaultSubmenus;
 use tauri::{Manager, Menu};
 
+mod client;
 mod live;
 mod menu;
-mod sign;
 
 fn main() {
   let ctx = tauri::generate_context!();
@@ -18,8 +18,10 @@ fn main() {
       live::open_live_window,
       live::close_live_window,
       live::has_live_window,
-      sign::md5,
-      sign::sign,
+      client::md5,
+      client::sign,
+      client::random_peer_id,
+      client::random_nonce,
     ])
     .menu(
       Menu::new()

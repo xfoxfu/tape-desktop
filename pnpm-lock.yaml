@@ -7,6 +7,7 @@ specifiers:
   '@chakra-ui/system': ^1.10.1
   '@emotion/react': ^11
   '@emotion/styled': ^11
+  '@faker-js/faker': ^6.0.0-alpha.7
   '@sentry/react': ^6.17.3
   '@sentry/tracing': ^6.17.3
   '@tauri-apps/api': ^1.0.0-beta.8
@@ -15,6 +16,8 @@ specifiers:
   '@types/react-dom': ^17.0.10
   '@vitejs/plugin-react': ^1.0.7
   framer-motion: ^5
+  ky: ^0.28.7
+  lowdb: ^3.0.0
   msw: ^0.36.8
   react: ^17.0.2
   react-dom: ^17.0.2
@@ -33,6 +36,8 @@ dependencies:
   '@sentry/tracing': 6.17.3
   '@tauri-apps/api': 1.0.0-beta.8
   framer-motion: 5.6.0_react-dom@17.0.2+react@17.0.2
+  ky: 0.28.7
+  lowdb: 3.0.0
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-error-boundary: 3.1.4_react@17.0.2
@@ -40,6 +45,7 @@ dependencies:
 
 devDependencies:
   '@babel/core': 7.16.12
+  '@faker-js/faker': 6.0.0-alpha.7
   '@tauri-apps/cli': 1.0.0-beta.10
   '@types/react': 17.0.38
   '@types/react-dom': 17.0.11
@@ -1259,6 +1265,11 @@ packages:
   /@emotion/weak-memoize/0.2.5:
     resolution: {integrity: sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==}
     dev: false
+
+  /@faker-js/faker/6.0.0-alpha.7:
+    resolution: {integrity: sha512-T2nYE8+EfzfkRMLMSm7UvgC7fZ2KkKEyCMeyPVS0q2cuvENbt1SjWyu0bOJ0JqBbTs1g+gYMWMFMXspWlzNVmQ==}
+    engines: {node: '>=14.0.0', npm: '>=7.0.0'}
+    dev: true
 
   /@mswjs/cookies/0.1.7:
     resolution: {integrity: sha512-bDg1ReMBx+PYDB4Pk7y1Q07Zz1iKIEUWQpkEXiA2lEWg9gvOZ8UBmGXilCEUvyYoRFlmr/9iXTRR69TrgSwX/Q==}
@@ -3563,6 +3574,11 @@ packages:
       json-buffer: 3.0.1
     dev: true
 
+  /ky/0.28.7:
+    resolution: {integrity: sha512-a23i6qSr/ep15vdtw/zyEQIDLoUaKDg9Jf04CYl/0ns/wXNYna26zJpI+MeIFaPeDvkrjLPrKtKOiiI3IE53RQ==}
+    engines: {node: '>=12'}
+    dev: false
+
   /latest-version/5.1.0:
     resolution: {integrity: sha512-weT+r0kTkRQdCdYCNtkMwWXQTMEswKrFBkm4ckQOMVhhqhIMI1UT2hMj+1iigIhgSZm5gTmrRXBNoGUgaTY1xA==}
     engines: {node: '>=8'}
@@ -3628,6 +3644,13 @@ packages:
       currently-unhandled: 0.4.1
       signal-exit: 3.0.6
     dev: true
+
+  /lowdb/3.0.0:
+    resolution: {integrity: sha512-9KZRulmIcU8fZuWiaM0d5e2/nPnrFyXkeXVpqT+MJS+vgbgOf1EbtvgQmba8HwUFgDl1oeZR6XqEJnkJmQdKmg==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      steno: 2.1.0
+    dev: false
 
   /lowercase-keys/1.0.0:
     resolution: {integrity: sha1-TjNms55/VFfjXxMkvfb4jQv8cwY=}
@@ -4851,6 +4874,11 @@ packages:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
     engines: {node: '>= 0.8'}
     dev: true
+
+  /steno/2.1.0:
+    resolution: {integrity: sha512-mauOsiaqTNGFkWqIfwcm3y/fq+qKKaIWf1vf3ocOuTdco9XoHCO2AGF1gFYXuZFSWuP38Q8LBHBGJv2KnJSXyA==}
+    engines: {node: ^14.13.1 || >=16.0.0}
+    dev: false
 
   /strict-event-emitter/0.2.0:
     resolution: {integrity: sha512-zv7K2egoKwkQkZGEaH8m+i2D0XiKzx5jNsiSul6ja2IYFvil10A59Z9Y7PPAAe5OW53dQUf9CfsHKzjZzKkm1w==}

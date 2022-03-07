@@ -15,6 +15,10 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 
+if (import.meta.env.DEV) {
+  import("./mocks/browser").then((m) => m.worker.start());
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider>

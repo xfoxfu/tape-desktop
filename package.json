@@ -18,6 +18,8 @@
     "@sentry/tracing": "^6.17.3",
     "@tauri-apps/api": "^1.0.0-beta.8",
     "framer-motion": "^5",
+    "ky": "^0.28.7",
+    "lowdb": "^3.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-error-boundary": "^3.1.4",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "@babel/core": ">=7.0.0 <8.0.0",
+    "@faker-js/faker": "^6.0.0-alpha.7",
     "@tauri-apps/cli": "^1.0.0-beta.10",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",

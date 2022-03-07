@@ -1,4 +1,5 @@
 use md5::compute;
+use rand::Rng;
 
 #[tauri::command]
 pub fn md5(src: &str) -> String {
@@ -17,6 +18,24 @@ pub fn sign(mut args: Vec<(String, String)>) -> String {
   }
   ret.push_str(obfstr::obfstr!("app_key=hPyKQn3yozr&&6$efket$lyAEQV65CSQ"));
   md5(&ret)
+}
+
+#[tauri::command]
+pub fn random_peer_id() -> String {
+  std::iter::repeat(())
+    .map(|()| rand::thread_rng().sample(rand::distributions::Standard))
+    .map(|r: u8| format!("{:02X}", r))
+    .take(6)
+    .collect()
+}
+
+#[tauri::command]
+pub fn random_nonce() -> String {
+  std::iter::repeat(())
+    .map(|()| rand::thread_rng().sample(rand::distributions::Alphanumeric))
+    .map(char::from)
+    .take(6)
+    .collect()
 }
 
 #[cfg(test)]
@@ -50,4 +69,16 @@ fn test_sign() {
     ),
     "13F73D045687D1B1DF4C20ADFC89A690"
   );
+}
+
+#[cfg(test)]
+#[test]
+pub fn test_peer_id() {
+  assert!(random_peer_id().len() == 12);
+}
+
+#[cfg(test)]
+#[test]
+pub fn test_nonce() {
+  assert!(random_nonce().len() == 6);
 }
