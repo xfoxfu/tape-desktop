@@ -11,15 +11,17 @@ import {
   Text,
   Heading,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuestion } from "../api";
 import { Marker, MarkerState } from "../components/marker";
 import { Question } from "../components/question";
+import { NavigationContext } from "../navcontext";
 import db from "../storage";
 
 export const QuestionPage: React.FunctionComponent = ({}) => {
   const params = useParams();
+  const nav = useNavigate();
   const { question, isLoading, isError } = useQuestion(params.id ?? "");
   const [mark, setMark] = useState<MarkerState>(
     db.data?.mark?.[params.id ?? ""] ?? "unread"
@@ -33,6 +35,19 @@ export const QuestionPage: React.FunctionComponent = ({}) => {
   useEffect(() => {
     setMark(db.data?.mark?.[params.id ?? ""] ?? "unread");
   }, [params.id]);
+  const navCtx = useContext(NavigationContext);
+  const onPrev = () => {
+    nav(`/questions/${navCtx.prev}`);
+  };
+  const onNext = () => {
+    nav(`/questions/${navCtx.next}`);
+  };
+  const onReadAndPrev = () => {
+    if (mark !== "dropped") {
+      onMark("readed");
+    }
+    nav(`/questions/${navCtx.prev}`);
+  };
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -59,9 +74,15 @@ export const QuestionPage: React.FunctionComponent = ({}) => {
           </>
         )}
         <ButtonGroup isAttached variant="ghost">
-          <Button>上一条</Button>
-          <Button>下一条</Button>
-          <Button>已读并下一条</Button>
+          <Button disabled={!navCtx.prev} onClick={onPrev}>
+            上一条
+          </Button>
+          <Button disabled={!navCtx.next} onClick={onNext}>
+            下一条
+          </Button>
+          <Button disabled={!navCtx.prev} onClick={onReadAndPrev}>
+            已读并上一条
+          </Button>
         </ButtonGroup>
         <Text color="gray.500">
           只有标记为「已读」或者「想读」并且当前打开的内容才会同步到「直播助手」中。

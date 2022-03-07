@@ -5,8 +5,9 @@ import { Question } from "../components/question";
 import { invoke } from "@tauri-apps/api";
 import { useQuestions, useQuestionsInfinite } from "../api";
 import { Selector, SelectorState } from "../components/selector";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import db from "../storage";
+import { NavigationContext } from "../navcontext";
 
 export const QuestionsPage: React.FunctionComponent = () => {
   const [source, setSource] = useState<SelectorState>("unanswered");
@@ -20,6 +21,28 @@ export const QuestionsPage: React.FunctionComponent = () => {
   };
   const { pages, isLoading, isError, size, setSize } =
     useQuestionsInfinite(source);
+  const navContext = useContext(NavigationContext);
+  useEffect(() => {
+    let prev = undefined;
+    let next = undefined;
+
+    if (params.id) {
+      let allVc =
+        pages?.flatMap((p) => p.data.map((q: any) => q.visitCode)) ?? [];
+      let idx = allVc.findIndex((vc) => vc === params.id);
+      if (idx !== -1) {
+        if (idx - 1 >= 0) {
+          prev = allVc[idx - 1];
+        }
+        if (idx + 1 < allVc.length) {
+          next = allVc[idx + 1];
+        }
+      }
+    }
+
+    navContext.prev = prev;
+    navContext.next = next;
+  }, [params.id]);
 
   return (
     <Flex minH="100vh">
