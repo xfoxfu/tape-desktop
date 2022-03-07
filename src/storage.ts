@@ -5,6 +5,7 @@ const STORAGE_NAME = "tape-desktop";
 
 export interface Data {
   peerId: string;
+  accessToken?: string;
 }
 
 const storage = new LocalStorage<Data>(STORAGE_NAME);
@@ -17,7 +18,7 @@ db.read();
 
 if (!db.data?.peerId) {
   randomPeerId().then((peerId) => {
-    db.data!.peerId = peerId;
+    db.data = { peerId };
     db.write();
   });
 }

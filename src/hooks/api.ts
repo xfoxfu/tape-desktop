@@ -1,20 +1,7 @@
-import ky, { Options } from "ky";
-import { randomNonce, signParams } from "../tauri";
+import { requestGet, requestPost } from "../tauri";
 import db from "../storage";
 
 const API_BASE = "http://apiv4.tapechat.net/";
-
-const client = ky.create({
-  prefixUrl: API_BASE,
-  headers: {
-    version: "1.7.1",
-    os: "1",
-    Accept: "*/*",
-    "Accept-Language": "zh-Hans-CN;1",
-    "Accept-Encoding": "gzip, deflate",
-    "User-Agent": "Tape/1.7.1 (iPhone; iOS 15.2; Scale/3.00)",
-  },
-});
 
 export interface ApiResult<T = unknown> {
   code: number;
@@ -24,30 +11,22 @@ export interface ApiResult<T = unknown> {
 
 export const useApiGet = async <T = unknown>(
   url: string,
-  params: Record<string, string | number>,
-  deps?: unknown[]
-) => {
-  const timestamp = (Math.ceil(Date.now() / 1000) * 1000).toString();
-  params["app_id"] = "5749260381";
-  params["nonce"] = await randomNonce();
-  params["timestamp"] = timestamp;
-
-  const sign = await signParams(
-    Object.entries(params).map(([k, v]) => [k, v.toString()])
+  params: Record<string, string | number>
+): Promise<T> => {
+  return await requestGet<T>(
+    new URL(url, new URL(API_BASE)).toString(),
+    params,
+    db.data?.peerId ?? ""
   );
+};
 
-  const opts: Options = {
-    headers: {
-      time: timestamp,
-      sign,
-      peerID: db.data?.peerId,
-    },
-  };
-  const res = await client.get(url, opts);
-  const body = (await res.json()) as ApiResult<T>;
-
-  if (body.code !== 200) {
-    throw new Error(body.message);
-  }
-  return body.content;
+export const apiPost = async <T = unknown>(
+  url: string,
+  params: Record<string, string | number>
+): Promise<T> => {
+  return await requestPost<T>(
+    new URL(url, new URL(API_BASE)).toString(),
+    params,
+    db.data?.peerId ?? ""
+  );
 };

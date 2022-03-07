@@ -9,32 +9,32 @@
     "vite:preview": "vite preview"
   },
   "dependencies": {
-    "@chakra-ui/icons": "^1.1.1",
-    "@chakra-ui/react": "^1.8.1",
-    "@chakra-ui/system": "^1.10.1",
-    "@emotion/react": "^11",
-    "@emotion/styled": "^11",
-    "@sentry/react": "^6.17.3",
-    "@sentry/tracing": "^6.17.3",
-    "@tauri-apps/api": "^1.0.0-beta.8",
-    "framer-motion": "^5",
-    "ky": "^0.28.7",
+    "@chakra-ui/icons": "^1.1.7",
+    "@chakra-ui/react": "^1.8.6",
+    "@chakra-ui/system": "^1.11.2",
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11.8.1",
+    "@sentry/react": "^6.18.1",
+    "@sentry/tracing": "^6.18.1",
+    "@tauri-apps/api": "^1.0.0-rc.1",
+    "framer-motion": "^6.2.8",
     "lowdb": "^3.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-error-boundary": "^3.1.4",
-    "react-router-dom": "^6.2.1"
+    "react-router-dom": "^6.2.2",
+    "swr": "^1.2.2"
   },
   "devDependencies": {
-    "@babel/core": ">=7.0.0 <8.0.0",
+    "@babel/core": "^7.17.5",
     "@faker-js/faker": "^6.0.0-alpha.7",
-    "@tauri-apps/cli": "^1.0.0-beta.10",
-    "@types/react": "^17.0.33",
-    "@types/react-dom": "^17.0.10",
-    "@vitejs/plugin-react": "^1.0.7",
-    "msw": "^0.36.8",
-    "typescript": "^4.4.4",
-    "vite": "^2.7.2"
+    "@tauri-apps/cli": "^1.0.0-rc.5",
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.13",
+    "@vitejs/plugin-react": "^1.2.0",
+    "msw": "^0.38.2",
+    "typescript": "^4.6.2",
+    "vite": "^2.8.6"
   },
   "msw": {
     "workerDirectory": "dist"

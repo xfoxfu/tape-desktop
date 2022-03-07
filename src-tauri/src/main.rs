@@ -22,6 +22,8 @@ fn main() {
       client::sign,
       client::random_peer_id,
       client::random_nonce,
+      client::request_get,
+      client::request_post,
     ])
     .menu(
       Menu::new()

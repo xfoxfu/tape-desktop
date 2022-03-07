@@ -1,5 +1,8 @@
 use md5::compute;
 use rand::Rng;
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
+use std::collections::HashMap;
 
 #[tauri::command]
 pub fn md5(src: &str) -> String {
@@ -17,6 +20,7 @@ pub fn sign(mut args: Vec<(String, String)>) -> String {
     }
   }
   ret.push_str(obfstr::obfstr!("app_key=hPyKQn3yozr&&6$efket$lyAEQV65CSQ"));
+  dbg!(&ret);
   md5(&ret)
 }
 
@@ -36,6 +40,120 @@ pub fn random_nonce() -> String {
     .map(char::from)
     .take(6)
     .collect()
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct ApiResult {
+  code: u16,
+  message: String,
+  content: Option<Value>,
+}
+
+pub fn inner_request_get(
+  url: String,
+  mut params: HashMap<String, Value>,
+  peer_id: String,
+) -> Result<Value, anyhow::Error> {
+  use std::time::SystemTime;
+  let timestamp = SystemTime::now()
+    .duration_since(SystemTime::UNIX_EPOCH)?
+    .as_secs()
+    * 1000;
+  let mut req = ureq::get(&url)
+    .set("version", "1.7.1")
+    .set("os", "1")
+    .set("Accept", "*/*")
+    .set("Accept-Language", "zh-Hans-CN;1")
+    .set("Accept-Encoding", "gzip, deflate")
+    .set("User-Agent", "Tape/1.7.1 (iPhone; iOS 15.2; Scale/3.00)")
+    .set("time", &timestamp.to_string())
+    .set("peerID", &peer_id);
+  params.insert("app_id".into(), "5749260381".into());
+  params.insert("nonce".into(), random_nonce().into());
+  params.insert("timestamp".into(), timestamp.to_string().into());
+  for (k, v) in params.iter() {
+    req = req.query(k, &v.to_string());
+  }
+  let res: ApiResult = req
+    .set(
+      "sign",
+      &sign(
+        params
+          .iter()
+          .map(|(k, v)| (k.clone(), v.to_string()))
+          .collect(),
+      ),
+    )
+    .call()?
+    .into_json()?;
+  if res.code != 200 {
+    Err(anyhow::anyhow!("{}: {}", res.code, res.message))?
+  }
+  Ok(res.content.unwrap_or(Value::Null))
+}
+
+#[tauri::command]
+pub fn request_get(
+  url: String,
+  params: HashMap<String, Value>,
+  peer_id: String,
+) -> Result<Value, String> {
+  inner_request_get(url, params, peer_id).map_err(|e| e.to_string())
+}
+
+pub fn inner_request_post(
+  url: String,
+  mut params: HashMap<String, Value>,
+  peer_id: String,
+) -> Result<Value, anyhow::Error> {
+  use std::time::SystemTime;
+  let timestamp = SystemTime::now()
+    .duration_since(SystemTime::UNIX_EPOCH)?
+    .as_secs()
+    * 1000;
+  let req = ureq::post(&url)
+    .set("version", "1.7.1")
+    .set("os", "1")
+    .set("Accept", "*/*")
+    .set("Accept-Language", "zh-Hans-CN;1")
+    .set("Accept-Encoding", "gzip, deflate")
+    .set("User-Agent", "Tape/1.7.1 (iPhone; iOS 15.2; Scale/3.00)")
+    .set("time", &timestamp.to_string())
+    .set("peerID", &peer_id);
+  params.insert("app_id".into(), "5749260381".into());
+  params.insert("nonce".into(), random_nonce().into());
+  params.insert("timestamp".into(), timestamp.to_string().into());
+  dbg!(&params);
+  let res: ApiResult = req
+    .set(
+      "sign",
+      &sign(
+        params
+          .iter()
+          .map(|(k, v)| {
+            (
+              k.clone(),
+              v.as_str().map(|s| s.into()).unwrap_or(v.to_string()),
+            )
+          })
+          .collect(),
+      ),
+    )
+    .send_json(params)?
+    .into_json()?;
+  if res.code != 200 {
+    Err(anyhow::anyhow!("{}: {}", res.code, res.message))?
+  }
+  Ok(res.content.unwrap_or(Value::Null))
+}
+
+#[tauri::command]
+pub fn request_post(
+  url: String,
+  params: HashMap<String, Value>,
+  peer_id: String,
+) -> Result<Value, String> {
+  inner_request_post(url, params, peer_id).map_err(|e| e.to_string())
 }
 
 #[cfg(test)]

@@ -13,20 +13,23 @@ import {
 import { useState } from "react";
 
 export interface PhoneCodeInputProps {
-  onCodeSent: () => unknown;
+  onCodeSent: (phone: string) => unknown;
+  error?: string;
 }
 
 export const PhoneCodeInput: React.FunctionComponent<PhoneCodeInputProps> = ({
   onCodeSent,
+  error,
 }) => {
   const [phone, setPhone] = useState("");
 
   const onSendCodeClick = () => {
-    onCodeSent?.();
+    console.log(phone);
+    onCodeSent?.(phone);
   };
 
   return (
-    <FormControl isRequired isInvalid={true}>
+    <FormControl isRequired isInvalid={!!error}>
       <InputGroup>
         <InputLeftAddon>
           <HStack>
@@ -49,7 +52,7 @@ export const PhoneCodeInput: React.FunctionComponent<PhoneCodeInputProps> = ({
           </Button>
         </InputRightElement>
       </InputGroup>
-      <FormErrorMessage>Email is required.</FormErrorMessage>
+      {error && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
   );
 };
