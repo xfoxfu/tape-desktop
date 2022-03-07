@@ -5,6 +5,7 @@ export interface QuestionProps {
   time: string;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   size?: string;
+  active?: boolean;
 }
 
 export const Question: React.FunctionComponent<QuestionProps> = ({
@@ -12,9 +13,16 @@ export const Question: React.FunctionComponent<QuestionProps> = ({
   time,
   onClick,
   size,
+  active,
 }) => {
   return (
-    <Box rounded="2xl" p={4} bg="white" onClick={onClick} cursor="pointer">
+    <Box
+      rounded="2xl"
+      p={4}
+      bg={active ? "cyan.100" : "white"}
+      onClick={onClick}
+      cursor="pointer"
+    >
       <Text fontSize={size}>{text}</Text>
       <Text color="gray.500">{time}</Text>
     </Box>

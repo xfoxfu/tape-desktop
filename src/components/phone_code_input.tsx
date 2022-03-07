@@ -24,7 +24,6 @@ export const PhoneCodeInput: React.FunctionComponent<PhoneCodeInputProps> = ({
   const [phone, setPhone] = useState("");
 
   const onSendCodeClick = () => {
-    console.log(phone);
     onCodeSent?.(phone);
   };
 

@@ -16,7 +16,7 @@ import { getVersion } from "@tauri-apps/api/app";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PhoneCodeInput from "../components/phone_code_input";
-import { apiPost } from "../hooks/api";
+import { apiPost } from "../api";
 import { db } from "../storage";
 
 export const LoginPage: React.FunctionComponent = () => {
@@ -44,7 +44,6 @@ export const LoginPage: React.FunctionComponent = () => {
       });
       db.data!.accessToken = res.jwtInfo.accessToken;
       db.write();
-      console.log(db.data?.accessToken);
       navigate("/questions");
     } catch (e) {
       if (e instanceof Error) {

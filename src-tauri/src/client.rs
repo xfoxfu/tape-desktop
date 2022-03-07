@@ -20,7 +20,6 @@ pub fn sign(mut args: Vec<(String, String)>) -> String {
     }
   }
   ret.push_str(obfstr::obfstr!("app_key=hPyKQn3yozr&&6$efket$lyAEQV65CSQ"));
-  dbg!(&ret);
   md5(&ret)
 }
 
@@ -49,17 +48,19 @@ pub struct ApiResult {
   content: Option<Value>,
 }
 
-pub fn inner_request_get(
-  url: String,
-  mut params: HashMap<String, Value>,
-  peer_id: String,
-) -> Result<Value, anyhow::Error> {
+fn normalize_req(
+  req: ureq::Request,
+  params: &mut HashMap<String, Value>,
+  peer_id: &str,
+  token: &Option<String>,
+) -> anyhow::Result<ureq::Request> {
   use std::time::SystemTime;
   let timestamp = SystemTime::now()
     .duration_since(SystemTime::UNIX_EPOCH)?
     .as_secs()
     * 1000;
-  let mut req = ureq::get(&url)
+
+  let req = req
     .set("version", "1.7.1")
     .set("os", "1")
     .set("Accept", "*/*")
@@ -71,21 +72,39 @@ pub fn inner_request_get(
   params.insert("app_id".into(), "5749260381".into());
   params.insert("nonce".into(), random_nonce().into());
   params.insert("timestamp".into(), timestamp.to_string().into());
+
+  let param_sign = params
+    .iter()
+    .map(|(k, v)| {
+      (
+        k.clone(),
+        v.as_str().map(|s| s.into()).unwrap_or(v.to_string()),
+      )
+    })
+    .collect();
+  let req = req.set("sign", &sign(param_sign));
+
+  let req = if let Some(t) = token {
+    req.set("Authorization", &format!("bearer {}", t))
+  } else {
+    req
+  };
+
+  Ok(req)
+}
+
+pub fn inner_request_get(
+  url: String,
+  mut params: HashMap<String, Value>,
+  peer_id: String,
+  token: Option<String>,
+) -> Result<Value, anyhow::Error> {
+  let mut req = normalize_req(ureq::get(&url), &mut params, &peer_id, &token)?;
   for (k, v) in params.iter() {
-    req = req.query(k, &v.to_string());
+    req = req.query(k, &v.as_str().map(|s| s.into()).unwrap_or(v.to_string()));
   }
-  let res: ApiResult = req
-    .set(
-      "sign",
-      &sign(
-        params
-          .iter()
-          .map(|(k, v)| (k.clone(), v.to_string()))
-          .collect(),
-      ),
-    )
-    .call()?
-    .into_json()?;
+  dbg!(&req);
+  let res: ApiResult = req.call()?.into_json()?;
   if res.code != 200 {
     Err(anyhow::anyhow!("{}: {}", res.code, res.message))?
   }
@@ -97,48 +116,18 @@ pub fn request_get(
   url: String,
   params: HashMap<String, Value>,
   peer_id: String,
+  token: Option<String>,
 ) -> Result<Value, String> {
-  inner_request_get(url, params, peer_id).map_err(|e| e.to_string())
+  inner_request_get(url, params, peer_id, token).map_err(|e| e.to_string())
 }
 
 pub fn inner_request_post(
   url: String,
   mut params: HashMap<String, Value>,
   peer_id: String,
+  token: Option<String>,
 ) -> Result<Value, anyhow::Error> {
-  use std::time::SystemTime;
-  let timestamp = SystemTime::now()
-    .duration_since(SystemTime::UNIX_EPOCH)?
-    .as_secs()
-    * 1000;
-  let req = ureq::post(&url)
-    .set("version", "1.7.1")
-    .set("os", "1")
-    .set("Accept", "*/*")
-    .set("Accept-Language", "zh-Hans-CN;1")
-    .set("Accept-Encoding", "gzip, deflate")
-    .set("User-Agent", "Tape/1.7.1 (iPhone; iOS 15.2; Scale/3.00)")
-    .set("time", &timestamp.to_string())
-    .set("peerID", &peer_id);
-  params.insert("app_id".into(), "5749260381".into());
-  params.insert("nonce".into(), random_nonce().into());
-  params.insert("timestamp".into(), timestamp.to_string().into());
-  dbg!(&params);
-  let res: ApiResult = req
-    .set(
-      "sign",
-      &sign(
-        params
-          .iter()
-          .map(|(k, v)| {
-            (
-              k.clone(),
-              v.as_str().map(|s| s.into()).unwrap_or(v.to_string()),
-            )
-          })
-          .collect(),
-      ),
-    )
+  let res: ApiResult = normalize_req(ureq::post(&url), &mut params, &peer_id, &token)?
     .send_json(params)?
     .into_json()?;
   if res.code != 200 {
@@ -152,8 +141,9 @@ pub fn request_post(
   url: String,
   params: HashMap<String, Value>,
   peer_id: String,
+  token: Option<String>,
 ) -> Result<Value, String> {
-  inner_request_post(url, params, peer_id).map_err(|e| e.to_string())
+  inner_request_post(url, params, peer_id, token).map_err(|e| e.to_string())
 }
 
 #[cfg(test)]

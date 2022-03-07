@@ -1,0 +1,83 @@
+import { requestGet, requestPost } from "./tauri";
+import db from "./storage";
+import useSWR, { Fetcher } from "swr";
+
+const API_BASE = "http://apiv4.tapechat.net/";
+
+export interface ApiResult<T = unknown> {
+  code: number;
+  message: string;
+  content: T;
+}
+
+export const apiGet = async <T = unknown>(
+  url: string,
+  params: Record<string, string | number>
+): Promise<T> => {
+  return await requestGet<T>(
+    new URL(url, new URL(API_BASE)).toString(),
+    params,
+    db.data?.peerId ?? "",
+    db.data?.accessToken
+  );
+};
+
+export const apiPost = async <T = unknown>(
+  url: string,
+  params: Record<string, string | number>
+): Promise<T> => {
+  return await requestPost<T>(
+    new URL(url, new URL(API_BASE)).toString(),
+    params,
+    db.data?.peerId ?? "",
+    db.data?.accessToken
+  );
+};
+
+const questionListFetcher: Fetcher = async (url: string) => {
+  let source = "";
+  if (url === "/question/questionList#unanswered") {
+    source = "unAnswer";
+  } else if (url === "/question/questionList#answered") {
+    source = "answer";
+  } else {
+    throw new Error("invalid fetch url");
+  }
+  let res = await apiPost<any>("/question/questionList", {
+    source: source,
+    pageSize: 15,
+    lastTimeStamp: Math.round(Date.now() / 1000),
+    page: 1,
+  });
+  return res;
+};
+
+export const useQuestions = (source: "unanswered" | "answered") => {
+  const { data, error } = useSWR<any>(
+    `/question/questionList#${source}`,
+    questionListFetcher
+  );
+
+  return {
+    questions: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+};
+
+const questionFetcher: Fetcher = async (url: string) => {
+  let res = await apiGet<any>(url, {});
+  return res;
+};
+
+export const useQuestion = (vc: string) => {
+  const { data, error } = useSWR<any>(
+    `/question/questionDetailByVC/${vc}`,
+    questionFetcher
+  );
+  return {
+    question: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+};

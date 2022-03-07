@@ -3,7 +3,6 @@ import { faker } from "@faker-js/faker";
 
 export const handlers = [
   rest.post("http://apiv4.tapechat.net/unuser/sms", (req, res, ctx) => {
-    console.log(req.headers);
     // {
     //   phone: faker.phone.phoneNumber('1##########'),
     //   timestamp: Math.round(faker.time.recent('unix')) / 1000 * 1000,

@@ -36,14 +36,16 @@ export const randomNonce = (): Promise<string> => {
 export const requestGet = <T = any>(
   url: string,
   params: Record<string, string | number>,
-  peerId: string
+  peerId: string,
+  token?: string
 ): Promise<T> => {
-  return wrapPromise(invoke("request_get", { url, params, peerId }));
+  return wrapPromise(invoke("request_get", { url, params, peerId, token }));
 };
 export const requestPost = <T = any>(
   url: string,
   params: Record<string, string | number>,
-  peerId: string
+  peerId: string,
+  token?: string
 ): Promise<T> => {
-  return wrapPromise(invoke("request_post", { url, params, peerId }));
+  return wrapPromise(invoke("request_post", { url, params, peerId, token }));
 };
