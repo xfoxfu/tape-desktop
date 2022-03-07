@@ -1,6 +1,7 @@
 import { requestGet, requestPost } from "./tauri";
 import db from "./storage";
 import useSWR, { Fetcher } from "swr";
+import useSWRInfinite from "swr/infinite";
 
 const API_BASE = "http://apiv4.tapechat.net/";
 
@@ -35,26 +36,26 @@ export const apiPost = async <T = unknown>(
 };
 
 const questionListFetcher: Fetcher = async (url: string) => {
-  let source = "";
-  if (url === "/question/questionList#unanswered") {
+  const u = new URL(url, "http://apiv4.tapechat.net/");
+  let source = u.searchParams.get("source") ?? "unanswered";
+  if (source === "unanswered") {
     source = "unAnswer";
-  } else if (url === "/question/questionList#answered") {
+  } else if (source === "answered") {
     source = "answer";
-  } else {
-    throw new Error("invalid fetch url");
   }
+  let page = Number.parseInt(u.searchParams.get("page") ?? "1");
   let res = await apiPost<any>("/question/questionList", {
     source: source,
     pageSize: 15,
     lastTimeStamp: Math.round(Date.now() / 1000),
-    page: 1,
+    page: page,
   });
   return res;
 };
 
 export const useQuestions = (source: "unanswered" | "answered") => {
   const { data, error } = useSWR<any>(
-    `/question/questionList#${source}`,
+    `/question/questionList?source=${source}`,
     questionListFetcher
   );
 
@@ -62,6 +63,21 @@ export const useQuestions = (source: "unanswered" | "answered") => {
     questions: data,
     isLoading: !error && !data,
     isError: error,
+  };
+};
+
+export const useQuestionsInfinite = (source: "unanswered" | "answered") => {
+  const { data, error, size, setSize } = useSWRInfinite<any>((size, prev) => {
+    if (prev && !prev.nextPageUrl) return null; // reached the end
+    return `/question/questionList?source=${source}&page=${size + 1}`;
+  }, questionListFetcher);
+
+  return {
+    pages: data,
+    isLoading: !error && !data,
+    isError: error,
+    size,
+    setSize,
   };
 };
 

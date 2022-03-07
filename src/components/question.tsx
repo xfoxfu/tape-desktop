@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Tag, Text } from "@chakra-ui/react";
 
 export interface QuestionProps {
   text: string;
@@ -6,6 +6,7 @@ export interface QuestionProps {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   size?: string;
   active?: boolean;
+  mark?: string;
 }
 
 export const Question: React.FunctionComponent<QuestionProps> = ({
@@ -14,6 +15,7 @@ export const Question: React.FunctionComponent<QuestionProps> = ({
   onClick,
   size,
   active,
+  mark,
 }) => {
   return (
     <Box
@@ -25,6 +27,7 @@ export const Question: React.FunctionComponent<QuestionProps> = ({
     >
       <Text fontSize={size}>{text}</Text>
       <Text color="gray.500">{time}</Text>
+      {mark && <Tag>{mark}</Tag>}
     </Box>
   );
 };

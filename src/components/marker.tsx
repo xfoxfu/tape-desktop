@@ -8,23 +8,23 @@ const MARKER_STATES = {
   dropped: "抛弃",
 };
 export type MarkerState = keyof typeof MARKER_STATES;
+export const markerStateToText = (state: MarkerState): string => {
+  return (
+    Object.entries(MARKER_STATES).find((s) => s[0] === state)?.[1] ?? "未知"
+  );
+};
 
 export interface MarkerProps {
   hint?: string;
-  defaultState?: MarkerState;
+  state: MarkerState;
   onChange?: (state: MarkerState) => unknown;
 }
 
 export const Marker: React.FunctionComponent<MarkerProps> = ({
   hint,
-  defaultState,
+  state,
   onChange,
 }) => {
-  const [state, setState] = useState<MarkerState>(defaultState ?? "unread");
-  useEffect(() => {
-    onChange?.(state);
-  }, [state, onChange]);
-
   return (
     <HStack spacing={2}>
       {hint && <Heading size="sm">{hint}</Heading>}
@@ -32,7 +32,7 @@ export const Marker: React.FunctionComponent<MarkerProps> = ({
         {Object.entries(MARKER_STATES).map(([k, v]) => (
           <Button
             colorScheme={state == k ? "teal" : undefined}
-            onClick={() => setState(k as MarkerState)}
+            onClick={() => onChange?.(k as MarkerState)}
             variant="solid"
           >
             {v}

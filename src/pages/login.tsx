@@ -13,7 +13,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { getVersion } from "@tauri-apps/api/app";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PhoneCodeInput from "../components/phone_code_input";
 import { apiPost } from "../api";
@@ -22,12 +22,14 @@ import { db } from "../storage";
 export const LoginPage: React.FunctionComponent = () => {
   const loc = useLocation();
   const nav = useNavigate();
-  if (
-    db.data?.accessToken &&
-    (loc.pathname === "/" || loc.pathname === "/login")
-  ) {
-    nav("/questions", { replace: true });
-  }
+  useEffect(() => {
+    if (
+      db.data?.accessToken &&
+      (loc.pathname === "/" || loc.pathname === "/login")
+    ) {
+      nav("/questions", { replace: true });
+    }
+  });
 
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [phone, setPhone] = useState("");

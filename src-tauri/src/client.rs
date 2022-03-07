@@ -103,7 +103,6 @@ pub fn inner_request_get(
   for (k, v) in params.iter() {
     req = req.query(k, &v.as_str().map(|s| s.into()).unwrap_or(v.to_string()));
   }
-  dbg!(&req);
   let res: ApiResult = req.call()?.into_json()?;
   if res.code != 200 {
     Err(anyhow::anyhow!("{}: {}", res.code, res.message))?
